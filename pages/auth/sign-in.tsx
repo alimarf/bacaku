@@ -37,7 +37,7 @@ const SignInPage = () => {
       <Navbar />
       <div className="w-[400px] mx-auto py-24">
         <h1 className="font-sans font-bold text-slate-900 text-5xl text-center mb-4">
-          Sign in
+          Masuk Bos
         </h1>
 
         <p className="font-sans text-slate-900 text-center mb-16">
