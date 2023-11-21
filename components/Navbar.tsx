@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import AccountDropwdown from "./AccountDropdown";
 import { useRouter } from "next/router";
 
-type Props = {};
+type Props = {
+  hasSearchInput?: boolean;
+};
 
-const Navbar: React.FC<Props> = () => {
+const Navbar: React.FC<Props> = ({ hasSearchInput = true}) => {
   const [keyword, setKeyword] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
@@ -15,7 +17,7 @@ const Navbar: React.FC<Props> = () => {
   const isLoggedin = true;
 
   useEffect(() => {
-    setKeyword(router.query.keyword as string || '');
+    setKeyword((router.query.keyword as string) || "");
   }, [router.query.keyword]);
 
   return (
@@ -24,21 +26,23 @@ const Navbar: React.FC<Props> = () => {
         <img src="/images/logo-with-text.svg" />
       </Link>
 
-      <div className="w-[720px] absolute left-1/2 -translate-x-1/2 flex items-center">
-        <MdSearch className="text-slate-400 mr-4" size={24} />
-        <input
-          className="font-sans text-sm placeholder-slate-400 text-slate-900 outline-none"
-          type="text"
-          placeholder="Search"
-          value={keyword}
-          onChange={(event) => setKeyword(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              router.push(`/search?keyword=${keyword}`);
-            }
-          }}
-        />
-      </div>
+      {hasSearchInput && (
+        <div className="w-[720px] absolute left-1/2 -translate-x-1/2 flex items-center">
+          <MdSearch className="text-slate-400 mr-4" size={24} />
+          <input
+            className="font-sans text-sm placeholder-slate-400 text-slate-900 outline-none"
+            type="text"
+            placeholder="Search"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                router.push(`/search?keyword=${keyword}`);
+              }
+            }}
+          />
+        </div>
+      )}
 
       {isLoggedin && (
         <div className="relative">
