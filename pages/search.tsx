@@ -3,16 +3,10 @@ import Navbar from "@/components/Navbar";
 
 import Article from "@/components/Arcticle";
 import Category from "@/components/Category";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
-export default function Home() {
-  const categories = [...Array(10)].map((_, index) => {
-    return {
-      id: index + 1,
-      slug: "/technology",
-      name: "Technology",
-    };
-  });
+export default function SearchPage() {
+  const router = useRouter();
 
   const articles = [...Array(5)].map((_, index) => {
     return {
@@ -34,22 +28,16 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Bacaku</title>
+        <title>Results for {router.query.keyword} | Bacaku</title>
         <link rel="icon" href="/favicon.ico"></link>
       </Head>
       <Navbar />
       <div className="w-[720px] mx-auto py-24">
         <div className="mb-16">
-          <p className="font-sans text-slate-900 text-sm mb-4">
-            Your Categories
+          <p className="font-sans text-slate-400 font-bold mb-3">Results for</p>
+          <p className="font-sans text-slate-900 font-bold text-5xl mb-3">
+            {router.query.keyword}
           </p>
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
-              <Link key={category.id} href={`/categories/${category.slug}`}>
-                <Category label={category.name} />
-              </Link>
-            ))}
-          </div>
         </div>
 
         {articles.map((article) => (
