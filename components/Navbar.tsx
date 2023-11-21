@@ -7,9 +7,19 @@ import { useRouter } from "next/router";
 
 type Props = {
   hasSearchInput?: boolean;
+  hasSubmitButton?: boolean;
+  isSubmitDisabled?: boolean;
+  submitLabel?: string;
+  onClickSubmit?: () => void;
 };
 
-const Navbar: React.FC<Props> = ({ hasSearchInput = true}) => {
+const Navbar: React.FC<Props> = ({
+  hasSearchInput = true,
+  submitLabel,
+  hasSubmitButton,
+  isSubmitDisabled,
+  onClickSubmit,
+}) => {
   const [keyword, setKeyword] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
@@ -44,24 +54,39 @@ const Navbar: React.FC<Props> = ({ hasSearchInput = true}) => {
         </div>
       )}
 
-      {isLoggedin && (
-        <div className="relative">
-          <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-            <img
-              className="w-10 h-10 rounded-full object-cover"
-              src="/images/dummy-avatar.png"
-              alt="John Die"
-            />
-          </button>
-          {isDropdownOpen && <AccountDropwdown />}
-        </div>
-      )}
+      <div className="flex items-center">
+        {hasSubmitButton && (
+          <>
+            <Button
+              type="button"
+              disabled={isSubmitDisabled}
+              onClick={onClickSubmit}
+            >
+              {submitLabel}
+            </Button>
+            <div className="w-6" />
+          </>
+        )}
 
-      {!isLoggedin && (
-        <Link href={"/auth/sign-in"}>
-          <Button>Sign In</Button>
-        </Link>
-      )}
+        {isLoggedin && (
+          <div className="relative">
+            <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+              <img
+                className="w-10 h-10 rounded-full object-cover"
+                src="/images/dummy-avatar.png"
+                alt="John Die"
+              />
+            </button>
+            {isDropdownOpen && <AccountDropwdown />}
+          </div>
+        )}
+
+        {!isLoggedin && (
+          <Link href={"/auth/sign-in"}>
+            <Button>Sign In</Button>
+          </Link>
+        )}
+      </div>
     </header>
   );
 };
