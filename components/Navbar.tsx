@@ -26,6 +26,17 @@ const Navbar: React.FC<Props> = ({
 
   const isLoggedin = true;
 
+  const user = {
+    fullname: "John Doe",
+    email: "john.doe@gmail.com",
+    photo: "/images/dummy-avatar.png"
+  };
+
+  const initialFullName = user.fullname
+    .split(" ")
+    .map((part) => part[0].toUpperCase())
+    .join("");
+
   useEffect(() => {
     setKeyword((router.query.keyword as string) || "");
   }, [router.query.keyword]);
@@ -71,11 +82,19 @@ const Navbar: React.FC<Props> = ({
         {isLoggedin && (
           <div className="relative">
             <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-              <img
-                className="w-10 h-10 rounded-full object-cover"
-                src="/images/dummy-avatar.png"
-                alt="John Die"
-              />
+              {!!user.photo && (
+                <img
+                  className="w-10 h-10 rounded-full object-cover"
+                  src={user.photo}
+                  alt={user.fullname}
+                />
+              )}
+
+              {!user.photo && (
+                <div className="h-10 w-10 rounded-full flex items-center justify-center bg-blue-800">
+                  <p className="font-sans text-white font-bold">{initialFullName}</p>
+                </div>
+              )}
             </button>
             {isDropdownOpen && <AccountDropwdown />}
           </div>
